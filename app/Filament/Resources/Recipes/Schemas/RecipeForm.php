@@ -2,6 +2,9 @@
 
 namespace App\Filament\Resources\Recipes\Schemas;
 
+use App\Models\Ingredient;
+use Filament\Forms\Components\Repeater;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Components\Fieldset;
@@ -51,6 +54,29 @@ class RecipeForm
                                 'gte:time_min',
                             ])*/
                     ]),
+
+                Repeater::make('ingredients')
+                    ->label('Ingrédients')
+                    ->relationship()
+                    ->schema([
+                        Select::make('ingredient_id')
+                            ->label('Ingrédient')
+                            ->relationship('ingredient', 'label')
+                            ->searchable()
+                            ->required(),
+
+                        TextInput::make('quantity')
+                            ->label('Quantité')
+                            ->numeric()
+                            ->required(),
+
+                        TextInput::make('unit')
+                            ->placeholder('pièce(s)')
+                            ->label('Unité')
+                            ->nullable(),
+                    ])
+                    ->columnSpan(2)
+                    ->addActionLabel('Ajouter un ingrédient'),
 
                 Textarea::make('description')
                     ->label('Description')
